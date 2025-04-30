@@ -136,20 +136,32 @@ Os testes passaram com sucesso. Foram também levantados warnings relacionados c
 
 ---
 
-Observações 
+## Observações Finais
 
-Os artefactos gerados pelo MLflow para todos os modelos exceto o modelo final Random Forest foram removidos da pasta mlruns/, devido às limitações de espaço impostas pelo GitHub.
+Os artefactos gerados pelo MLflow para todos os modelos, exceto o modelo final Random Forest, foram removidos da pasta `mlruns/`, devido às limitações de espaço impostas pelo GitHub.
 
-O modelo original (model.pkl) criado pelo MLflow tinha mais de 100 MB, ultrapassando o limite permitido pelo GitHub, mesmo com Git LFS.
+O modelo original (`model.pkl`) criado pelo MLflow tinha mais de 100 MB, ultrapassando o limite permitido, mesmo com Git LFS. Para contornar essa limitação, o modelo foi exportado e comprimido como `model_rf_compressed.joblib`.
 
-Devido às limitações de tamanho impostas pelo GitHub (100 MB), o modelo treinado (`model_rf_compressed.joblib`) **não está incluído neste repositório**.
+Devido a essas restrições de tamanho, o ficheiro `model_rf_compressed.joblib` **não está incluído neste repositório**, mas pode ser descarregado aqui:
 
-Pode ser descarregado aqui:  
-[Download via Google Drive](https://drive.google.com/uc?id=11P1Jt12AXi8vWVOLnOjnGGLJaoEO_MrF)
+📥 [Download via Google Drive](https://drive.google.com/uc?id=11P1Jt12AXi8vWVOLnOjnGGLJaoEO_MrF)
 
-Após o download, colocar o ficheiro na **pasta raiz do projeto**, ou seja, onde se encontram os ficheiros `main.py` e `Dockerfile`.
+Após o download, o ficheiro deve ser colocado na **pasta raiz do projeto**, ou seja, no mesmo nível que `main.py` e `Dockerfile`.
 
 Este modelo é necessário para:
 - Servir a API com FastAPI
 - Correr os testes automatizados
-- Reproduzir previsões
+- Reproduzir previsões localmente
+
+---
+
+## Notas sobre os testes automáticos (CI/CD)
+
+O projeto inclui testes automatizados com `pytest` que validam a resposta da API. Estes testes funcionam corretamente em ambiente local, desde que o modelo `.joblib` esteja presente.
+
+No entanto, como os testes no GitHub Actions **não conseguem aceder ao modelo via Google Drive**, ocorre uma falha ao tentar carregar o ficheiro ausente.
+
+Isto não compromete o funcionamento do projeto em ambiente local ou real — apenas indica que os testes automáticos no CI/CD requerem a presença manual do modelo.
+
+---
+
